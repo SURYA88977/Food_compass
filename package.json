@@ -1,0 +1,12 @@
+{
+  "name": "food-compass-workspace",
+  "private": true,
+  "workspaces": [
+    "food-compass"
+  ],
+  "scripts": {
+    "dev": "npm --prefix food-compass run dev",
+    "build": "npm --prefix food-compass run build",
+    "preview": "npm --prefix food-compass run preview"
+  }
+}

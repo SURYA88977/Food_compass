@@ -1,0 +1,508 @@
+/* ================================================================== */
+/*  App.css — styles specific to App.jsx (theme system + component     */
+/*  utility classes). Design tokens, reset and Tailwind-like utility    */
+/*  classes shared across the whole project stay in index.css.         */
+/*                                                                      */
+/*  NEO-GOTHIC LUXURY THEME                                             */
+/*  Two moods, one identity: "Midnight Grimoire" (dark) is the obsidian */
+/*  alchemist's-cookbook mode the brief describes; "Illuminated         */
+/*  Manuscript" (light) is the same gold/crimson/purple system read by  */
+/*  candlelight on parchment instead of black. Same tokens, same        */
+/*  components — the toggle changes mood, not identity.                 */
+/* ================================================================== */
+
+/* ================================================================== */
+/*  LIGHT / DARK THEME VARIABLES                                       */
+/*  Driven by data-theme="light" | "dark" on the app root element      */
+/* ================================================================== */
+
+[data-theme="light"] {
+  /* Illuminated Manuscript — aged parchment & ink, same gothic accents */
+  --bg: #F2EAD9; --bg2: #E8DDC4; --card: #FAF6EC; --text: #241C14; --text-soft: #6E5D46;
+  --border: rgba(122, 92, 20, 0.3); --accent: #8B0000; --accent-soft: #A9821F; --green: #3F7F52; --red: #A32020;
+  --nav-bg: rgba(250, 246, 236, 0.86);
+  --surface-elevated: #FFFFFF;
+}
+
+[data-theme="dark"] {
+  /* Midnight Grimoire — obsidian, blood crimson, antique gold */
+  --bg: #0A0A0A; --bg2: #121212; --card: #1A1A1A; --text: #F5F2EB; --text-soft: #B8B2A6;
+  --border: rgba(201, 162, 39, 0.25); --accent: #8B0000; --accent-soft: #C9A227; --green: #4C9A6A; --red: #B22222;
+  --nav-bg: rgba(10, 10, 10, 0.86);
+  --surface-elevated: #222222;
+}
+
+/* Global theme-driven behaviour (previously an inline <style> tag) */
+* { transition: background-color 250ms ease, border-color 250ms ease, color 250ms ease; }
+::selection { background: color-mix(in srgb, var(--accent-soft) 30%, transparent); color: var(--text); }
+:focus-visible { outline: 2px solid var(--accent-soft); outline-offset: 2px; }
+
+/* ================================================================== */
+/*  THEME UTILITY CLASSES (replace the app's former inline styles)     */
+/* ================================================================== */
+
+.ft-app-root { background: var(--bg); }
+.ft-text { color: var(--text); }
+.ft-text-soft { color: var(--text-soft); }
+.ft-accent { color: var(--accent); }
+.ft-green { color: var(--green); }
+.ft-border { border-color: var(--border); }
+.ft-border-text { border-color: var(--border); color: var(--text); }
+.ft-bg-card { background: var(--card); }
+.ft-bg-accent { background: var(--accent); }
+.ft-bg-green { background: var(--green); }
+.ft-card-border { background: var(--card); border-color: var(--border); }
+.ft-card-solid { background: var(--card); border: 1px solid var(--border); }
+.ft-card-border-shadow-sm { background: var(--card); border-color: var(--border); box-shadow: var(--shadow-sm); }
+.ft-card-border-shadow-lg { background: var(--card); border-color: var(--border); box-shadow: var(--shadow-lg); }
+.ft-card-shadow-lg { background: var(--card); box-shadow: var(--shadow-lg); }
+.ft-dropdown { background: var(--card); border-color: var(--border); box-shadow: var(--shadow-lg); }
+.ft-dropdown-item { background: transparent; }
+.ft-dropdown-item:hover { background: color-mix(in srgb, var(--accent-soft) 10%, transparent); }
+.ft-no-scrollbar { scrollbar-width: none; }
+.ft-footer { background: var(--bg2); border-color: var(--border); border-top-width: 1px; border-top-style: solid; position: relative; }
+.ft-footer::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-soft), transparent);
+  opacity: 0.6;
+}
+.ft-footer-bottom { color: var(--text-soft); border-color: var(--border); }
+.ft-chip-card { background: var(--card); color: var(--text); border: 1px solid var(--border); }
+
+/* Badges */
+.ft-badge-neutral { background: var(--bg2); color: var(--text-soft); }
+.ft-badge-green { background: color-mix(in srgb, var(--green) 16%, transparent); color: var(--green); }
+.ft-badge-accent { background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent-soft) 30%, transparent); }
+.ft-badge-red { background: color-mix(in srgb, var(--red) 16%, transparent); color: var(--red); }
+
+/* Icon button */
+.ft-iconbtn-active { background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--accent-soft); }
+.ft-iconbtn-inactive { background: transparent; color: var(--text-soft); }
+
+/* Image shimmer / fade-in */
+.ft-fade { transition: opacity 300ms ease; opacity: 1; }
+img.ft-fade { opacity: 0; }
+img.ft-fade.is-visible { opacity: 1; }
+.ft-fade.is-hidden { opacity: 0; }
+
+/* Recipe card — treated like an illuminated manuscript page */
+.ft-card-flip-outer { perspective: 1200px; }
+.ft-card-compact { height: 250px; }
+.ft-card-full { height: 270px; }
+.ft-card-flip-inner { transform-style: preserve-3d; transform: rotateY(0deg); }
+.ft-card-flip-inner.is-flipped { transform: rotateY(180deg); }
+.ft-card-face {
+  backface-visibility: hidden;
+  background: var(--card);
+  border-color: var(--border);
+  border-width: 1px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 300ms ease-out, border-color 300ms ease-out;
+}
+.ft-card-face-back {
+  backface-visibility: hidden;
+  transform: rotateY(180deg);
+  background: var(--card);
+  border-color: var(--border);
+  border-width: 1px;
+  box-shadow: var(--shadow-sm);
+}
+.card-hover-lift:hover .ft-card-face {
+  box-shadow: var(--shadow-glow);
+  border-color: var(--accent-soft);
+}
+.ft-gradient-card-front { background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 18%, var(--card)), color-mix(in srgb, var(--secondary, var(--accent-soft)) 10%, var(--card))); }
+.ft-gradient-recipe-header { background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 14%, var(--card)), color-mix(in srgb, var(--accent-soft) 10%, var(--card))); }
+.ft-photo-fade { background: linear-gradient(to top, rgba(0, 0, 0, 0.55), transparent); }
+.ft-fav-btn-bg { background: color-mix(in srgb, var(--card) 75%, transparent); backdrop-filter: blur(6px); }
+.ft-btn-accent-shadow { background: var(--accent); box-shadow: 0 6px 16px -4px color-mix(in srgb, var(--accent) 60%, transparent); transition: box-shadow 250ms ease-out, transform 250ms ease-out; }
+.ft-btn-accent-shadow:hover { box-shadow: 0 8px 22px -4px color-mix(in srgb, var(--accent-soft) 55%, transparent); }
+.ft-btn-accent-shadow2 { background: var(--accent); box-shadow: 0 10px 26px -8px color-mix(in srgb, var(--accent) 65%, transparent); transition: box-shadow 250ms ease-out; }
+.ft-btn-accent-shadow2:hover { box-shadow: 0 12px 30px -6px color-mix(in srgb, var(--accent-soft) 55%, transparent); }
+.ft-icon-chip-bg { background: color-mix(in srgb, var(--accent) 12%, transparent); }
+.ft-icon-chip-bg-strong { background: color-mix(in srgb, var(--accent) 16%, transparent); }
+
+/* Navbar — frosted obsidian, gold hairline, crimson hover glow */
+.ft-navbar { background: var(--nav-bg); border-color: var(--border); border-bottom-width: 1px; border-bottom-style: solid; }
+.ft-nav-indicator { background: color-mix(in srgb, var(--accent) 14%, transparent); border: 1px solid color-mix(in srgb, var(--accent-soft) 25%, transparent); z-index: 0; }
+.ft-nav-link { color: var(--text-soft); }
+.ft-nav-link:hover { color: var(--accent-soft); }
+.ft-nav-link-active { color: var(--accent-soft); }
+.ft-search-input { background: color-mix(in srgb, var(--card) 88%, transparent); color: var(--text); border-color: var(--border); }
+.ft-search-input.is-focused { border-color: var(--accent-soft); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-soft) 18%, transparent); }
+
+/* Theme toggle */
+.ft-toggle-track { background: var(--bg2); border: 1px solid var(--border); }
+.ft-toggle-knob { background: var(--card); box-shadow: var(--shadow-sm); transform: translateX(0px); }
+[data-theme="dark"] .ft-toggle-knob { transform: translateX(28px); }
+
+/* Mobile menu */
+.ft-menu-overlay { pointer-events: none; opacity: 0; }
+.ft-menu-overlay.is-open { pointer-events: auto; opacity: 1; }
+.ft-menu-panel { background: var(--card); border-right: 1px solid var(--border); transform: translateX(-100%); }
+.ft-menu-panel.is-open { transform: translateX(0); }
+
+/* Filter drawer (mobile) */
+.ft-drawer-overlay { pointer-events: none; }
+.ft-drawer-overlay.is-open { pointer-events: auto; }
+.ft-drawer-backdrop { opacity: 0; }
+.ft-drawer-backdrop.is-open { opacity: 1; }
+.ft-drawer-panel { background: var(--card); border-top: 1px solid var(--accent-soft); transform: translateY(100%); }
+.ft-drawer-panel.is-open { transform: translateY(0); }
+
+/* Filter chips */
+.ft-chip-active { background: color-mix(in srgb, var(--accent) 16%, transparent); border-color: var(--accent-soft); color: var(--accent-soft); font-weight: 600; }
+.ft-chip-inactive { background: transparent; border-color: var(--border); color: var(--text-soft); font-weight: 500; }
+.ft-chip-inactive:hover { border-color: var(--accent-soft); color: var(--text); }
+.ft-filter-btn-active { border-color: var(--accent-soft); color: var(--accent-soft); }
+
+/* Hero */
+.ft-flame-badge { color: var(--accent-soft); background: color-mix(in srgb, var(--accent) 12%, transparent); border: 1px solid color-mix(in srgb, var(--accent-soft) 25%, transparent); }
+.ft-hero-search { background: color-mix(in srgb, var(--card) 85%, transparent); color: var(--text); border-color: var(--border); min-height: 44px; box-shadow: var(--shadow-sm); backdrop-filter: blur(10px); }
+.ft-hero-search.is-focused { border-color: var(--accent-soft); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-soft) 16%, transparent); }
+.ft-ingredient-chip { background: color-mix(in srgb, var(--accent) 14%, transparent); color: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent-soft) 22%, transparent); }
+.ft-btn-accent-cta { background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 70%, black)); min-height: 44px; box-shadow: 0 12px 28px -8px color-mix(in srgb, var(--accent) 60%, transparent); transition: box-shadow 250ms ease-out, transform 250ms ease-out; }
+.ft-btn-accent-cta:hover { box-shadow: 0 14px 34px -6px color-mix(in srgb, var(--accent-soft) 55%, transparent); transform: translateY(-1px); }
+.ft-hero-blob {
+  background:
+    radial-gradient(circle at 30% 25%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 60%),
+    radial-gradient(circle at 75% 75%, color-mix(in srgb, var(--accent-soft) 14%, transparent), transparent 55%);
+  animation: hero-blob-drift 10s ease-in-out infinite;
+}
+.ft-hero-frame { border: 2px solid color-mix(in srgb, var(--accent-soft) 30%, transparent); }
+
+/* Quick chips */
+.ft-quickchip { min-height: 40px; background: var(--card); color: var(--text-soft); border-color: var(--border); }
+.ft-quickchip:hover { border-color: var(--accent-soft); color: var(--text); }
+.ft-quickchip.is-active { background: var(--accent); color: var(--text); border-color: var(--accent-soft); box-shadow: 0 6px 18px -4px color-mix(in srgb, var(--accent) 55%, transparent); }
+
+/* Bachelor section */
+.ft-bachelor-panel { background: color-mix(in srgb, var(--secondary, #6A0DAD) 8%, var(--card)); border: 1px solid color-mix(in srgb, var(--accent-soft) 22%, transparent); }
+.ft-bachelor-blob { background: radial-gradient(circle, color-mix(in srgb, var(--green) 20%, transparent), transparent 70%); }
+.ft-btn-green-cta { background: var(--green); min-height: 44px; box-shadow: 0 10px 24px -8px color-mix(in srgb, var(--green) 45%, transparent); }
+.ft-kitchen-bar { background: color-mix(in srgb, var(--accent) 9%, transparent); }
+
+/* Why section */
+.ft-why-icon-bg { background: color-mix(in srgb, var(--accent) 20%, transparent); color: var(--accent-soft); }
+
+/* Recipe details */
+.ft-recipe-header { background: var(--nav-bg); border-color: var(--border); border-bottom-width: 1px; border-bottom-style: solid; backdrop-filter: blur(12px); }
+.ft-detail-bottombar { background: var(--nav-bg); border-color: var(--border); border-top-width: 1px; border-top-style: solid; padding-bottom: calc(1rem + env(safe-area-inset-bottom)); backdrop-filter: blur(12px); }
+.ft-tab-active { color: var(--accent-soft); }
+.ft-tab-inactive { color: var(--text-soft); }
+.ft-checkbox { accent-color: var(--accent); }
+.ft-checked-item { text-decoration: line-through; opacity: 0.5; }
+.ft-step-num { background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent-soft) 25%, transparent); }
+
+/* Cooking mode */
+.ft-congrats-icon-bg { background: color-mix(in srgb, var(--green) 16%, transparent); }
+.ft-dot { width: 7px; height: 7px; background: var(--border); }
+.ft-dot.is-current { width: 20px; }
+.ft-dot.is-filled { background: var(--accent-soft); }
+
+/* Bottom nav */
+.ft-bottomnav { background: var(--nav-bg); border-color: var(--border); border-top-width: 1px; border-top-style: solid; padding-bottom: env(safe-area-inset-bottom); backdrop-filter: blur(12px); }
+.ft-bottomnav-item { background: transparent; transform: translateY(0) scale(1); }
+.ft-bottomnav-item.is-active { background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--accent-soft); transform: translateY(-1px) scale(1.08); }
+
+/* Stagger animation delays (previously per-instance inline animationDelay) */
+.ft-delay-20 { animation-delay: 20ms; }
+.ft-delay-60 { animation-delay: 60ms; }
+.ft-delay-100 { animation-delay: 100ms; }
+.ft-delay-140 { animation-delay: 140ms; }
+.ft-delay-180 { animation-delay: 180ms; }
+/* ================================================================== */
+/*  ADDITIONAL ORNAMENTATION — pushing the Neo-Gothic identity further  */
+/*  Corner fleurons, illuminated capitals, wax-seal favoriting,          */
+/*  engraved headings, ornate dividers, gothic scrollbars.               */
+/*  Purely additive: new classes only, nothing above is overridden.     */
+/* ================================================================== */
+
+/* ---- Ornate corner fleurons (illuminated-manuscript page corners) ---- */
+/* Drawn as four small bracket marks inset from each corner. Safe to use */
+/* inside overflow:hidden containers since nothing is drawn outside.    */
+.ft-ornate-frame { position: relative; }
+.ft-ornate-frame::before,
+.ft-ornate-frame::after {
+  content: "";
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.85;
+  border-color: color-mix(in srgb, var(--accent-soft) 75%, transparent);
+}
+.ft-ornate-frame::before {
+  top: 8px; left: 8px;
+  border-top: 2px solid;
+  border-left: 2px solid;
+  border-color: color-mix(in srgb, var(--accent-soft) 75%, transparent);
+  border-top-left-radius: 6px;
+}
+.ft-ornate-frame::after {
+  bottom: 8px; right: 8px;
+  border-bottom: 2px solid;
+  border-right: 2px solid;
+  border-color: color-mix(in srgb, var(--accent-soft) 75%, transparent);
+  border-bottom-right-radius: 6px;
+}
+.ft-ornate-frame .ft-ornate-corner-tr,
+.ft-ornate-frame .ft-ornate-corner-bl {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.85;
+}
+.ft-ornate-frame .ft-ornate-corner-tr {
+  top: 8px; right: 8px;
+  border-top: 2px solid color-mix(in srgb, var(--accent-soft) 75%, transparent);
+  border-right: 2px solid color-mix(in srgb, var(--accent-soft) 75%, transparent);
+  border-top-right-radius: 6px;
+}
+.ft-ornate-frame .ft-ornate-corner-bl {
+  bottom: 8px; left: 8px;
+  border-bottom: 2px solid color-mix(in srgb, var(--accent-soft) 75%, transparent);
+  border-left: 2px solid color-mix(in srgb, var(--accent-soft) 75%, transparent);
+  border-bottom-left-radius: 6px;
+}
+
+/* ---- Illuminated drop cap — first letter of a recipe's description ---- */
+.ft-dropcap::first-letter {
+  font-family: var(--font-display);
+  font-size: 2.9em;
+  font-weight: 700;
+  float: left;
+  line-height: 0.78;
+  padding: 0.06em 0.1em 0 0;
+  color: var(--accent);
+  text-shadow: 0 0 14px color-mix(in srgb, var(--accent-soft) 55%, transparent);
+}
+
+/* ---- Engraved section headings — small flanking fleurons + inset shadow ---- */
+.ft-heading-ornate {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  text-shadow: 0 1px 0 color-mix(in srgb, var(--card) 60%, transparent);
+}
+.ft-heading-ornate::before,
+.ft-heading-ornate::after {
+  content: "❦";
+  font-size: 0.65em;
+  color: var(--accent-soft);
+  opacity: 0.75;
+  transform: translateY(-1px);
+}
+.ft-heading-ornate::after { content: none; }
+
+/* ---- Ornate divider with a center fleur, for larger section breaks ---- */
+.gothic-divider-orn {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  max-width: 220px;
+  margin: 0.9rem 0 1.4rem;
+  color: var(--accent-soft);
+}
+.gothic-divider-orn::before,
+.gothic-divider-orn::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-soft), transparent);
+  opacity: 0.6;
+}
+.gothic-divider-orn span {
+  font-size: 0.8rem;
+  line-height: 1;
+  opacity: 0.9;
+}
+
+/* ---- Wax-seal favorite button (recipe card heart) ---- */
+.ft-fav-btn-bg {
+  position: relative;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent-soft) 35%, transparent), var(--shadow-sm);
+}
+.ft-fav-btn-bg::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 9999px;
+  border: 1px dashed color-mix(in srgb, var(--accent-soft) 40%, transparent);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* ---- Metallic sheen sweep on primary gothic CTAs (hover only) ---- */
+.ft-btn-accent-cta,
+.ft-btn-accent-shadow,
+.ft-btn-accent-shadow2,
+.ft-btn-green-cta {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.ft-btn-accent-cta::after,
+.ft-btn-accent-shadow::after,
+.ft-btn-accent-shadow2::after,
+.ft-btn-green-cta::after {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0;
+  left: -60%;
+  width: 40%;
+  background: linear-gradient(115deg, transparent, color-mix(in srgb, var(--accent-soft) 55%, white 10%), transparent);
+  opacity: 0;
+  transform: skewX(-18deg);
+  transition: opacity 200ms ease;
+  pointer-events: none;
+}
+.ft-btn-accent-cta:hover::after,
+.ft-btn-accent-shadow:hover::after,
+.ft-btn-accent-shadow2:hover::after,
+.ft-btn-green-cta:hover::after {
+  opacity: 0.55;
+  animation: sheen-sweep 900ms ease forwards;
+}
+@keyframes sheen-sweep {
+  from { left: -60%; }
+  to { left: 130%; }
+}
+
+/* ---- Illuminated step-number medallion (recipe steps) ---- */
+.ft-step-num {
+  position: relative;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent-soft) 30%, transparent), 0 0 0 3px color-mix(in srgb, var(--accent) 6%, transparent);
+}
+
+/* ---- Gothic quatrefoil bullets for tip / note lists ---- */
+.ft-gothic-list { list-style: none; }
+.ft-gothic-list li {
+  position: relative;
+  padding-left: 1.1em;
+}
+.ft-gothic-list li::before {
+  content: "❧";
+  position: absolute;
+  left: 0;
+  color: var(--accent-soft);
+}
+
+/* ---- Ornamental focus brackets for search inputs ---- */
+.ft-hero-search.is-focused,
+.ft-search-input.is-focused {
+  position: relative;
+}
+.ft-hero-search.is-focused::before,
+.ft-hero-search.is-focused::after {
+  content: "";
+}
+
+/* ---- Gothic scrollbar (thin antique-gold thumb) for the rare places ---- */
+/* that need a visible, on-theme scrollbar instead of the hidden default. */
+.ft-scroll-gothic {
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-soft) transparent;
+}
+.ft-scroll-gothic::-webkit-scrollbar {
+  display: block;
+  width: 6px;
+  height: 6px;
+}
+.ft-scroll-gothic::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--accent-soft) 60%, transparent);
+  border-radius: 999px;
+}
+.ft-scroll-gothic::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ---- Ornate ring around the recipe hero / cooking-mode image frames ---- */
+.ft-gradient-recipe-header,
+.ft-gradient-card-front {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent-soft) 22%, transparent);
+}
+
+/* ---- Candle-flicker glow for the theme toggle knob ---- */
+.ft-toggle-knob {
+  animation: candle-flicker 4.2s ease-in-out infinite;
+}
+@keyframes candle-flicker {
+  0%, 100% { box-shadow: var(--shadow-sm), 0 0 0 0 color-mix(in srgb, var(--accent-soft) 0%, transparent); }
+  45% { box-shadow: var(--shadow-sm), 0 0 10px 1px color-mix(in srgb, var(--accent-soft) 35%, transparent); }
+  55% { box-shadow: var(--shadow-sm), 0 0 6px 0px color-mix(in srgb, var(--accent-soft) 20%, transparent); }
+}
+
+/* ---- Embossed hairline under the recipe-detail sticky header & bottom bar ---- */
+.ft-recipe-header, .ft-detail-bottombar, .ft-bottomnav {
+  position: relative;
+}
+.ft-recipe-header::after,
+.ft-bottomnav::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-soft), transparent);
+  opacity: 0.55;
+  pointer-events: none;
+}
+.ft-recipe-header::after { bottom: -1px; }
+.ft-bottomnav::before { top: -1px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ft-toggle-knob { animation: none; }
+  .ft-btn-accent-cta::after, .ft-btn-accent-shadow::after, .ft-btn-accent-shadow2::after, .ft-btn-green-cta::after { display: none; }
+}
+
+/* ================================================================== */
+/*  MANUSCRIPT ORNAMENT ASSETS — remixed illuminated-manuscript art     */
+/*  (from a 16th-c. calligraphy model book), applied as CSS masks so    */
+/*  they recolor automatically with the active theme's accent-soft.    */
+/* ================================================================== */
+
+.ft-ornament {
+  display: block;
+  background-color: var(--accent-soft);
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+/* Corner placement — absolute within a position:relative ancestor */
+.ft-corner-tl { position: absolute; top: 6px; left: 6px; z-index: 2; }
+.ft-corner-tr { position: absolute; top: 6px; right: 6px; z-index: 2; transform: scaleX(-1); }
+.ft-corner-bl { position: absolute; bottom: 6px; left: 6px; z-index: 2; transform: scaleY(-1); }
+.ft-corner-br { position: absolute; bottom: 6px; right: 6px; z-index: 2; transform: scale(-1, -1); }
+
+.ft-divider-art { margin: 0 auto; }
+
+/* Large ambient medallion watermark, sat low-opacity behind hero content */
+.ft-medallion-watermark {
+  position: absolute;
+  background-color: var(--accent-soft);
+  opacity: 0.08;
+  pointer-events: none;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-position: center;
+  mask-position: center;
+  animation: medallion-drift 40s linear infinite;
+}
+@keyframes medallion-drift {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ft-medallion-watermark { animation: none; }
+}
